@@ -1,0 +1,92 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=2 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+<div class="container pt-5">
+  <h3>Danh mục lớp học</h3>
+    <form class="pt-3">
+      <div class="row">
+        <div class="col-4">
+          <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập từ khóa để tìm kiếm"/> 
+        </div>
+
+        <div class="col-4" >
+          <select name="subject_id" class="form-control">
+            <option value="">-----Chọn môn học----</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.id }}" {% if filters.subject_id|add:0 == subject.id %} selected {%endif%}>
+              {{subject.name}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-2" style="">
+          <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+        <div class="col-2 ">
+          <a href='{% url "class-create" %}' class="btn btn-primary">Thêm lớp học</a>
+        </div>
+      </div>
+    </form> 
+  <table class="table table-bordered">
+    <tr>
+      <th style="width: 5%" class="text-center">STT</th>
+      <th style="width: 25%" class="text-center">Mã Lớp</th>
+      <th style="width: 30%" class="text-center">Tên Lớp</th>
+      <th style="width: 30%" class="text-center">Tên Môn Học</th>
+      <th style="width: 10%" class="text-center">Thao tác</th>
+    </tr>
+    {% for cl in classes %}
+    <tr>
+      <td class="text-center">{{ forloop.counter0|add:classes.start_index}}</td>
+      <td class="text-center">{{ cl.code }}</td>
+      <td class="text-center">{{ cl.name }}</td>
+      <td class="text-center">{{ cl.subject.name }}</td>
+      <td class="text-center">
+        <a title="Chỉnh sửa" href='{% url "class-update" cl.id %}'><i class="fas fa-edit"></i></a>
+        &nbsp;
+        <a title="Xóa" style="color: red" href="javascript:void(0);" onclick="confirmDelete(this)" url='{% url "class-delete" cl.id %}'>
+          <i class="fas fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <nav aria-label="...">
+    {% if classes.has_other_pages %}
+      <ul class="pagination">
+        {% if classes.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{searchclass}}&page={{ classes.previous_page_number }}"> « </a></li> 
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> « </span></li>
+        {% endif %}
+  
+        {% for i in classes.paginator.page_range %}
+          {% if classes.number == i %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="{{searchclass}}&page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+  
+        {% if classes.has_next %}
+          <li class="page-item"><a class="page-link" href="{{searchclass}}page={{ classes.next_page_number }}"> » </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> » </span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+    </nav>
+</div>
+<script>
+  function confirmDelete(a) {
+    var url = a.getAttribute("url");
+    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+      location.href = url;
+    }
+  }
+</script>
+{% endblock %}

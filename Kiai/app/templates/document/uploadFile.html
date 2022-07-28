@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block navbar %} 
+{% with page=5 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+<div class="container mt-5">
+  <form method="POST" enctype="multipart/form-data" actions="">
+    {% csrf_token %}
+    <h2 class="text-center">Tải đề thi</h2>
+    <table class="table table-form">
+      <tr>
+        <th>Môn học:</th>
+        <td>{{ document.subject.name }}</td>
+      </tr>
+      <tr>
+        <th>Mã đề thi:</th>
+        <td>{{ document.code }}</td>
+      </tr>
+      <tr>
+        <th>Số lượng câu hỏi:</th>
+        <td> {{document.num_question}} </td>
+      </tr>
+      <tr>
+        <th>Trạng thái xuất bản:</th>
+        <td> {{document.status}} </td>
+      </tr>
+      <tr>
+        <th>Đề thi:</th>
+        <td>
+          <input type="file", name="doc"/>{{form.doc}}
+        </td>
+      </tr>
+    </table>
+    <button href="{% url 'document-list'%}" type='submit' class="btn btn-primary float-right">Lưu lại</button>
+    <a class="btn btn-secondary float-right mr-1" href="{% url 'document-list'%}">Quay lại</a> 
+  </form>
+</div>
+{% endblock %}

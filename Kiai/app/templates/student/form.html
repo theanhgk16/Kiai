@@ -1,0 +1,48 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=0 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+
+  <div class="container mt-3">
+    <form method="POST" novalidate> 
+        {%csrf_token%}
+        <table class="table table-form">
+          <tbody>
+            <tr>
+              <th>Mã:</th>
+              <td>{{form.code}}</td>
+            </tr>
+            <tr>
+              <th>Tên:</th>
+              <td style="color:red">{{form.name}} {{form.name.errors}}</td>
+            </tr>
+            <tr>
+              <th>Ngày sinh:</th>
+              <td>{{form.birthday}}</td>
+            </tr>
+            <tr>
+              <th>Giới tính:</th>
+              <td>{{form.sex}} </td>
+            </tr>
+            <tr>
+              <th>Số điện thoại:</th>
+              <td>{{form.phone}}</td>
+            </tr> 
+            <tr>
+              <th>Địa chỉ</th>
+              <td>{{form.address}}</td>
+            </tr>
+            <tr>
+              <th>CMND:</th>
+              <td> {{form.cmnd}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-primary" type="submit">Lưu lại</button>
+        <a class="btn btn-secondary" href='{% url "student-list" %}'>Quay lại</a>
+    </form>
+  </div>
+{% endblock %}

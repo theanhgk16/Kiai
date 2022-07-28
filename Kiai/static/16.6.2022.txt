@@ -1,0 +1,6 @@
+1. sửa coppy Số điện thoại
+2. Sửa from-to trong tab student thành tiếng việt
+3. Mã +1
+4. Để mình tên trong tab student require
+5. Để cả mã và tên trong tab môn học require
+6. Tab class dùng c

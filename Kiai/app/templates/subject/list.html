@@ -1,0 +1,84 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=1 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+  <div class="container pt-5">
+    <h2>Danh mục môn học</h2>
+    <form class="pt-3">
+      <div class="row">
+        <div class="col-6" style="">
+          <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập từ khóa để tìm kiếm"/> 
+        </div>
+        <div class="col-4" style="">
+          <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+        <div class="col-2 ">
+          <a href='{% url "subject-create" %}' class="btn btn-primary">Thêm môn học</a>
+        </div>
+      </div>
+    </form> 
+    <table class="table table-bordered">
+      <tr>
+        <th style="width: 5%" class="text-center">STT</th>
+        <th style="width: 20%" class="text-center">Mã môn học</th>
+        <th style="width: 25%" class="text-center">Tên môn học</th>
+        <th style="width: 20%" class="text-center">Ảnh</th>
+        <th style="width: 20%" class="text-center">Mô tả</th>
+        <th style="width: 10%" class="text-center">Thao tác</th>
+      </tr>
+      {% for subject in subjects %}
+      <tr>
+        
+        <td class="text-center">{{ forloop.counter0|add:subjects.start_index}}</td>
+        <td class="text-center">{{ subject.code }}</td>
+        <td class="text-center">{{ subject.name }}</td>
+        <td class="text-center"><img style="width:100%" src="/{{subject.image}}"></td>
+        <td>{{ subject.description }}</td>
+        <td class="text-center">
+          <a title="Chỉnh sửa" href='{% url "subject-update" subject.id %}'><i class="fas fa-edit"></i></a>
+          &nbsp;
+          <a title="Xóa" style="color: red" href="javascript:void(0);" onclick="confirmDelete(this)" url="{% url "subject-delete" subject.id %}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+   <nav aria-label="...">
+      {% if subjects.has_other_pages %}
+        <ul class="pagination">
+          {% if subjects.has_previous %}
+            <li class="page-item"><a class="page-link" href="{{searchsubject}}&page={{ subjects.previous_page_number }}"> « </a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link"> « </span></li>
+          {% endif %}
+    
+          {% for i in subjects.paginator.page_range %}
+            {% if subjects.number == i %}
+              <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{{searchsubject}}&page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+    
+          {% if subjects.has_next %}
+            <li class="page-item"><a class="page-link" href="{{searchsubject}}page={{ subjects.next_page_number }}"> » </a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link"> » </span></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+    </nav> 
+  </div>
+<script>
+  function confirmDelete(a) {
+    var url = a.getAttribute("url");
+    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+      location.href = url;
+    }
+  }
+</script>
+{% endblock %}

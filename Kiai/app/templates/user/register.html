@@ -1,0 +1,105 @@
+{% extends 'user/base.html' %}
+{% block content %}
+
+<div class='container mt-3'>
+  <form method="POST" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ subject.pk }}"/>
+    <h1 style="text-align:center; margin-top:20">Đăng kí môn học trực tuyến</h1>
+      <div class="row">
+          <div class="col-6">
+              <div class="form-group mt-4">
+                  <table class="table table-form">
+                    <tr>
+                      <th colspan="2">
+                        <h4 style="text-align:center;">Thông tin môn học</h4>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Tên môn học:</th>
+                      <td>
+                        <img src="/{{subject.image}}">
+                        <br>
+                        <span class="">{{subject.name}}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Mã môn học:</th>
+                      <td>{{subject.code}}</td>
+                    </tr>
+                    <tr>
+                      <th>Mô tả:</th>
+                      <td>{{subject.description}}</td> 
+                    </tr>
+                  </table>
+              </div>
+          </div>
+
+          <div class="col-6">
+              <div class="form-group mt-4">
+                <table class="table table-form">
+                    <tr>
+                      <th colspan="2">
+                      <h4 style="text-align:center;">Thông tin người đăng kí</h4>
+                      </th>
+                    </tr>
+                    <tr>
+                        <th>Mã học sinh:</th>
+                        <td>{{student.code}}</td>
+                    </tr> 
+                    <tr>
+                      <th> Tên học sinh:</th>
+                      <td>{{student.name}}</td>
+                    </tr> 
+                    <tr>
+                      <th>Ghi chú:</th>
+                      <td>{{form.note }}</td>
+                    </tr>
+                  </table>
+                </br>
+                   <button class="btn btn-primary float-right" type="submit" data-toggle="modal" data-target="#exampleModal" href="register-subject">Đăng kí</button>
+                   <a class="btn btn-secondary float-right mr-1" href="{% url 'home' %}">Quay lại</a> 
+                    <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Thông báo</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Bạn đã đăng kí thành công.</p>
+                                  <p>Vui lòng theo dõi kết quả. Xin cảm ơn!</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <a class="btn btn-primary" href="{% url 'home' %}">Tiếp tục</a>
+                                  <button class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+              </div>
+          </div>
+      </div>
+  </form>
+</div>
+<script>
+  $(function(){
+    console.log($('form')[0])
+    $('form').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        method:'POST',
+        url:'/register/'+$('form [name=id]').val(),
+        contentType:false,processData:false,
+        data:new FormData(this),
+        success:function(resp) {
+          console.log(resp)
+        }
+      })
+    })
+  })
+</script>
+{% endblock %}

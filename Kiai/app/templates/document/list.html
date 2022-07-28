@@ -1,0 +1,122 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=5 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+
+</style>
+  <div class="container pt-5">
+    <h2>Danh sách đề thi</h2>
+    <form class="pt-3">
+      <div class="row">
+        <div class="col-4">
+          <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập từ khóa để tìm kiếm"/> 
+        </div>
+
+        <div class="col-4" >
+          <select name="subject_id" class="form-control">
+            <option value="">-----Chọn môn học----</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.id }}" {% if filters.subject_id|add:0 == subject.id %} selected {%endif%}>
+              {{subject.name}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-2" style="">
+          <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+        <div class="col-2 ">
+          <a href='{% url "document-create" %}' class="btn btn-primary">Thêm lớp học</a>
+        </div>
+      </div>
+    </form> 
+    <table class="table table-bordered">
+      <tr>
+        <th style="width: 5%" class="text-center">STT</th>
+        <th style="width: 25%" class="text-center">Môn học</th>
+        <th style="width: 15%" class="text-center">Mã đề thi</th>
+        <th style="width: 15%" class="text-center">Số lượng câu hỏi</th>
+        <th style="width: 20%" class="text-center">Trạng thái xuất bản</th>
+        <th style="width: 30%" class="text-center">Thao tác</th>
+      </tr>
+      {% for document in documents %}
+      <tr>
+        <td class="text-center">{{ forloop.counter0|add:documents.start_index}}</td>
+        <td class="text-center">{{ document.subject.name }}</td>
+        <td class="text-center">{{ document.code }}</td>
+        <td class="text-center">{{ document.num_question }}</td>
+        <td class="text-center">
+          <input id="toggle-event" type="checkbox" {% if document.status %} checked {% endif %} data-toggle="toggle" >
+          <div id="console-event"></div>
+        </td>
+        <td class="text-center">
+          <a href='' class='btn btn-success' type="submit" data-toggle="modal" data-target="#exampleModal">Xem đề</a>
+          <a href='{% url "upload-file" document.id%}'class="btn btn-success" type="submit" >Tải đề thi</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <nav aria-label="...">
+      {% if documents.has_other_pages %}
+        <ul class="pagination">
+          {% if documents.has_previous %}
+            <li class="page-item"><a class="page-link" href="{{searchdocument}}&page={{ documents.previous_page_number }}"> « </a></li> 
+          {% else %}
+            <li class="page-item disabled"><span class="page-link"> « </span></li>
+          {% endif %}
+    
+          {% for i in documents.paginator.page_range %}
+            {% if documents.number == i %}
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="{{searchdocument}}&page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+    
+          {% if classes.has_next %}
+            <li class="page-item"><a class="page-link" href="{{searchdocument}}page={{ documents.next_page_number }}"> » </a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link"> » </span></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+      </nav>
+  </div>
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Xem đề thi</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Bạn đã đăng kí thành công.</p>
+              <p>Vui lòng theo dõi kết quả. Xin cảm ơn!</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<script>
+  $(function() {
+    $('#toggle-event').change(function() {
+      $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+    })
+    .ajax({
+      type: "POST",
+      url: ,
+      data:
+    })
+  })
+
+</script>
+{% endblock %}
+

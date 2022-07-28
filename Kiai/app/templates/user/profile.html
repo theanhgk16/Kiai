@@ -1,0 +1,82 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<form method="POST" novalidate>
+  {%csrf_token%}
+  <section style="background-color: #eee;">
+      <div class="container py-5 mt-5 mb-5">
+        <div class="row">
+          <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+              <ol class="mb-0">
+                <h1 class="text-center">Thông tin tài khoản</h1>
+              </ol>
+            </nav>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card mb-4">
+              <div class="card-body text-center">
+                <img src="/static/images/user1.png" alt="avatar"
+                  class="rounded-circle img-fluid" style="width: 150px;">
+                <h5 class="my-3">Xin chào</h5>
+                <p class="text-muted mb-1">{{ user.name }}</p>
+                <br>
+                <div class="d-flex justify-content-center mb-2">
+                  <button type="button" class="btn btn-primary">Theo dõi</button>
+                  <button type="button" class="btn btn-outline-primary ml-1">Trạng thái</button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-lg-8 table table-form">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Tên đăng nhập:</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <td> {{form.username}} </td>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Tên người dùng:</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <td> {{form.name}}</td>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Số điện thoại:</p>     
+                  </div>
+                  <div class="col-sm-9">
+                    <td type="number" > {{form.phone}} </td> 
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Địa chỉ:</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <td type="text" > {{form.address}} </td>
+                  </div>
+                </div>
+                <hr>
+                
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-right" href="{% url 'edit-profile' %}">Lưu lại</button>
+            <a class="btn btn-secondary float-right mr-1" href="{% url 'home' %}">Quay lại</a>
+        </div>
+      </div>
+    </section>
+  </form>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=3 %} {{block.super }} 
+{% endwith %} {% endblock %} 
+{% block content %}
+<div class="container pt-5">
+  <h3>Danh mục kì thi</h3>
+  <form class="mt-3">
+    <div class="row">
+      <div class="col-2">
+        Từ:<input type="date" name="from_date" value="{{filters.from_date}}" class="form-control" />
+      </div>
+      <div class="col-2">
+        Đến:<input type="date" name="to_date" value="{{filters.to_date}}" class="form-control" />
+      </div>
+      <div class="col-4 mt-4">
+        <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập từ khóa để tìm kiếm"/>
+      </div>
+      <div class="col-2 mt-4">
+        <button class="btn btn-primary">Tìm kiếm</button>
+      </div>
+      <div class="col-2 mt-4">
+        <a  href='{% url "exam-create" %}' class="btn btn-primary">Thêm kì thi</a>
+      </div>
+    </div>
+  </form> 
+  <table class="table table-bordered">
+    <tr>
+      <th style="width: 5%" class="text-center">STT</th>
+      <th style="width: 15%" class="text-center">Mã</th>
+      <th style="width: 20%" class="text-center">Tên</th>
+      <th style="width: 20%" class="text-center">Ngày bắt đầu</th>
+      <th style="width: 30%" class="text-center">Môn học</th>
+      <th style="width: 10%" class="text-center">Thao tác</th>
+    </tr>
+    {% for exam in exams %}
+      <tr>
+        <td class="text-center">{{ forloop.counter0|add:exams.start_index}}</td>
+        <td class="text-center">{{ exam.code }}</td>
+        <td class="text-center">{{ exam.name }}</td>
+        <td class="text-center">{{ exam.start_date|date:"d/m/Y" }}</td>
+        <td class="text-center">{{ exam.subject.name }}</td>
+        <td class="text-center">
+          <a title="Chỉnh sửa" href='{% url "exam-update" exam.id %}'><i class="fas fa-edit"></i
+          ></a>
+          &nbsp;
+          <a title="Xóa" style="color: red" href="javascript:void(0);" onclick="confirmDelete(this)" url='{% url "exam-delete" exam.id %}'>
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+ <nav aria-label="...">
+    {% if exams.has_other_pages %}
+      <ul class="pagination">
+        {% if exams.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{searchexam}}&page={{ exams.previous_page_number }}"> « </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> « </span></li>
+        {% endif %}
+  
+        {% for i in exams.paginator.page_range %}
+          {% if exams.number == i %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="{{searchexam}}&page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+  
+        {% if exams.has_next %}
+          <li class="page-item"><a class="page-link" href="{{searchexam}}page={{ exams.next_page_number }}"> » </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> » </span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+    </nav> 
+</div>
+<script>
+  function confirmDelete(a) {
+    var url = a.getAttribute("url");
+    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+      location.href = url;
+    }
+  }
+</script>
+{% endblock %}

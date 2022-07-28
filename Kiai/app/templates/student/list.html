@@ -1,0 +1,118 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=0 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+<div class="container pt-3">
+  <h2>Danh sách người dùng</h2>
+  <form class="pt-5">
+    <div class="row">
+      <div class="col-2">
+        Từ:<input type="date" name="from_date" value="{{filters.from_date}}" class="form-control" />
+      </div>
+      <div class="col-2">
+        Đến:<input type="date" name="to_date" value="{{filters.to_date}}" class="form-control" />
+      </div>
+      <div class="col-4 mt-4">
+        <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập từ khóa để tìm kiếm"/>
+      </div>
+      <div class="col-2 mt-4">
+        <button class="btn btn-primary">Tìm kiếm</button>
+      </div>
+      <div class="col-2 mt-4";>
+        <a href='{% url "student-create" %}' class="btn btn-primary">Thêm Người dùng</a>
+      </div>
+    </div>
+  </form> 
+  <table class="table table-bordered">
+    <tr>
+      <th style="width: 5%" class="text-center">STT</th>
+      <th style="width: 5%" class="text-center">Mã</th>
+      <th style="width: 15%" class="text-center">Tên người dùng</th>
+      <th style="width: 15%" class="text-center">Ngày sinh</th>
+      <th style="width: 10%" class="text-center">Giới tính</th>
+      <th style="width: 15%" class="text-center">Số điện thoại</th>
+      <th style="width: 15%" class="text-center">Địa chỉ</th>
+      <th style="width: 10%" class="text-center">CMND</th>
+      <th style="width: 10%" class="text-center">Thao Tác</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td class="text-center">{{ forloop.counter0|add:students.start_index}}</td>
+      <td class="text-center">{{ student.code }}</td>
+      <td class="text-center">{{ student.name }}</td>
+      <td class="text-center">{{ student.birthday|date:"d/m/Y" }}</td>
+      <td class="text-center">{{ student.sex }}</td>
+      <td class="text-center">
+        <button class="btn btn-light js-copy" type="button">{{ student.phone }}</button> 
+      </td> 
+ 
+      <td class="text-center">{{ student.address}}</td>
+      <td class="text-center">{{ student.cmnd}}</td>
+      <td class="text-center">
+        <a title="Chỉnh sửa" href='{% url "student-update" student.id %}'><i class="fas fa-edit"></i></a>
+        &nbsp;
+        <a title="Xóa" style="color: red" href="javascript:void(0);" onclick="confirmDelete(this)" url='{% url "student-delete" student.id %}'>
+          <i class="fas fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+ 
+  <nav aria-label="...">
+    {% if students.has_other_pages %}
+      <ul class="pagination">
+        {% if students.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{searchUrl}}&page={{ students.previous_page_number }}"> « </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> « </span></li>
+        {% endif %}
+
+        {% for student in students.paginator.page_range %}
+          {% if students.number == student %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ student }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="{{searchUrl}}&page={{ student }}">{{ student }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if students.has_next %}
+          <li class="page-item"><a class="page-link" href="{{searchUrl}}&page={{ students.next_page_number }}"> » </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> » </span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  </nav> 
+</div>
+
+<script>
+  function confirmDelete(a) {
+    var url = a.getAttribute("url");
+    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+      location.href = url;
+    }
+  }
+</script>
+
+<script>
+  $('.js-copy').click(function(){
+    const number = $(this).text().trim();
+    // tạo 1 phẩn tử vô hình
+    const emt = document.createElement("input");
+    emt.setAttribute("value", number);
+    document.body.appendChild(emt);
+    // Lấy phần tử bên trong giá trị đầu vào
+    emt.select();
+    // Sao chép giá trị
+    document.execCommand("copy");
+    // removing the child
+    emt.parentNode.removeChild(emt);
+    //Hiển thị trạng thái đã sao chép
+    alert(`Bạn vừa copy số: ${number}`)
+  })
+</script> 
+{% endblock %}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/lightbox.css">
+    <link rel="stylesheet" href="/static/css/youtube-popup.css">
+    <link rel="stylesheet" href="/static/css/grt-youtube-popup.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/slick.min.css">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/lightbox.min.js"></script>
+    <script src="/static/js/grt-youtube-popup.js"></script>
+    <script src="/static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/static/js/slick.min.js"></script>
+    <script src="https://kit.fontawesome.com/e2db74ebd5.js" crossorigin="anonymous"></script>
+    <title>Manage Student</title>
+    
+    <style>
+      .lazy-loading-slider{
+        padding-top: 80px;
+        overflow: hidden;
+        height: 100vh;
+      }
+      .lazy-loading-slider .slide-box{
+        width:100%;
+        height: 100vh;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-color: rgba(0,0,0,0.25)
+      }
+      .lazy-loading-slider .slide-box img{
+        width:100%;
+        height: 100%;
+        object-fit: cover;
+        vertical-align: top;
+      }
+      .lazy-loading-slider .slick-arrow{
+        width:50px;
+        height: 45px;
+        position: absolute;
+        top: 50%;
+        margin-top: -35px;
+        font-size: 0px;
+        cursor: pointer;
+        border: 0;
+        z-index: 10; 
+      }
+      .lazy-loading-slider .slick-arrow.slick-next{
+        background:url(/static/images/next.png) center center no-repeat;
+        right: 10px;
+        background-size: contain;
+      }
+      .lazy-loading-slider .slick-arrow.slick-prev{
+        background:url(/static/images/prev.png) center center no-repeat;
+        left: 10px;
+        background-size: contain;
+      }
+    </style>
+</head>
+<body>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
+        <div class="container-fluid d-flex justify-content-center py-3">
+          <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01" aria-controls="navbarExample01"
+          aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarExample01">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item {% if not page %} active {% endif %}">
+                <a class="nav-link" href="{% url 'home' %}">Trang Chủ</a>
+              </li>
+              <li class="nav-item {% if page == 1 %} active {% endif %}">
+                <a class="nav-link" href="">Thông tin</a>
+              </li>
+              </ul>
+          </div>
+        </div>
+            <ul class="navbar-nav ml-auto mr-3">
+                <li class="nav-item dropdown no-arrow">
+                  <a class="nav-link dropdown-toggle p-0" data-toggle="dropdown" href="#">
+                    <img class="rounded-circle" style="width:40px; height:35px" src="/static/images/user.svg">
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="accounts/edit-profile">Thông tin tài khoản</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/accounts/logout">Đăng xuất</a>
+                  </div>
+                </li>
+            </ul>
+      </nav>
+  </div>
+  <!-- Background image -->
+  <div class="lazy-loading-slider">
+        <div class="slide-box" style = "background-image: url(/static/images/loader.gif);">
+          <img data-lazy="/static/images/banner1.jpg">
+        </div>
+        <div class="slide-box" style = "background-image: url(/static/images/loader.gif);">
+          <img data-lazy="/static/images/banner2.jpg">
+        </div>
+        <div class="slide-box" style = "background-image: url(/static/images/loader.gif);">
+          <img data-lazy="/static/images/banner3.jpg">
+        </div>
+  </div>
+
+  <!-- Background image -->
+  <div class="mb-4">
+    {%block content %}
+    {% endblock %}
+  </div>
+ 
+</body>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <h6>Giới thiệu</h6>
+          <p class="text-justify">Phần mềm quản lý điểm là không thể thiếu cho công tác giảng dạy và đánh giá học sinh.Phần mềm quản lý được đưa vào sử dụng đa dạng, trong nhiều lĩnh vực khác nhau. Giáo dục đào tạo với sự hỗ trợ của phần mềm quản lý giúp nâng cao hiệu quả công việc tối đa. Nhà trường, mỗi giáo viên có thể hoàn thành tốt và nhanh chóng công việc của mình khi có phần mềm thích hợp được đưa vào sử dụng. 
+            Trong đó, phần mềm quản lý điểm là không thể thiếu cho công tác giảng dạy và đánh giá học sinh. Gíup cho thầy cô 1 phần mềm quản lý điểm bao quát tất cả các vấn đề trong nhà trường và có kết nối trực tiếp với hệ thống cơ sở dữ liệu ngành của Bộ Giáo dục và đào tạo</p>
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <h6>Môn học</h6>
+          <ul class="footer-links">
+            <li><a href="http://scanfcode.com/category/c-language/">Toán cao cấp 1</a></li>
+            <li><a href="http://scanfcode.com/category/front-end-development/">Toán cao cấp 2</a></li>
+            <li><a href="http://scanfcode.com/category/back-end-development/">Xác suất thống kê</a></li>
+            <li><a href="http://scanfcode.com/category/java-programming-language/">Lập trình web</a></li>
+            <li><a href="http://scanfcode.com/category/templates/">Nhập môn tin học</a></li>
+          </ul>
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <h6>Thông tin liên hệ</h6>
+          <ul class="footer-links">
+            <li><a href="http://scanfcode.com/about/">Về chúng tôi</a></li>
+            <li><a href="http://scanfcode.com/contact/">Liên hệ</a></li>
+            <li><a href="http://scanfcode.com/contribute-at-scanfcode/">Hòm thư góp ý</a></li>
+            <li><a href="http://scanfcode.com/privacy-policy/">Chính sách bảo mật</a></li>
+            <li><a href="http://scanfcode.com/sitemap/">Vị trí</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p class="copyright-text">Copyright &copy; 2022 by 
+       <a href="#">Nguyễn Thế Anh</a>.
+          </p>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <ul class="social-icons">
+            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>   
+          </ul>
+        </div>
+      </div>
+    </div>
+</footer>
+
+<script>
+    $(document).ready(function(){
+      $('.lazy-loading-slider').slick({
+        lazyLoad: 'ondemand',
+        slideToShow: 1,
+        slideToScroll: 1
+      });
+    
+    });
+</script> 
+</html>

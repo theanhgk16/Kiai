@@ -1,0 +1,5 @@
+*Add CSS Classes: phương thức addClass () để thêm một lớp CSS vào (các) phần tử HTML
+- syntax ; $(selector).addClass(className);
+- Phương thức này nhận một tham số là một hoặc nhiều lớp được phân tách bằng dấu cách để được thêm vào thuộc tính 
+	lớp của mỗi phần tử được so khớp. Nhiều hơn một lớp có thể được thêm vào cùng một lúc, được phân tách bằng dấu cách, 
+	vào tập hợp các phần tử phù hợp

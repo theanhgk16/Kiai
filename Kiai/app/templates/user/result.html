@@ -1,0 +1,82 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<style>
+  .btn{
+    float:right;
+  }
+</style>
+<div class='container mt-3'>
+    <h1 class="text-center mt-5">Xem kết quả môn học trực tuyến</h1>
+      <div class="row">
+          <div class="col-6">
+              <div class="form-group mt-4">
+                  <table class="table table-form">
+                    <tr>
+                      <th colspan="2">
+                        <h4 style="text-align:center;">Thông tin môn học</h4>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Tên môn học:</th>
+                      <td>
+                        <img src="/{{subject.image}}">
+                        <br>
+                        <span class="">{{subject.name}}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Mã môn học:</th>
+                      <td>{{subject.code}}</td>
+                    </tr>
+                    <tr>
+                      <th>Mô tả:</th>
+                      <td>{{subject.description}}</td> 
+                    </tr>
+                  </table>
+              </div>
+          </div>
+          <div class="col-6">
+              <div class="form-group mt-4">
+                <table class="table table-form">
+                    <tr>
+                      <th colspan="2">
+                      <h4 style="text-align:center;">Thông tin kết quả</h4>
+                      </th>
+                    </tr>
+                    <tr>
+                        <th>Mã học sinh:</th>
+                        <td>{{student.code}}</td>
+                    </tr> 
+                    <tr>
+                      <th> Tên học sinh:</th>
+                      <td>{{student.name}}</td>
+                    </tr> 
+                    <tr>
+                      <th>Kết quả:</th>
+                      <table class="table">
+                        <thead class="thead-light">
+                          <tr>
+                            <th scope="col">Kì Thi</th>
+                            <th scope="col">Ngày</th>
+                            <th scope="col">Điểm</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for exam in exams %}
+                            <tr>
+                              <td>{{ exam.code }} - {{ exam.name }}</td>
+                              <td>{{ exam.start_date | date }}</td>
+                              <td>{{ forloop.counter0 }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </tr> 
+                  </table>
+                </br>
+                   <a class="btn btn-secondary " href="{% url 'home' %}">Quay lại</a> 
+              </div>
+          </div>
+      </div>
+</div>
+{% endblock %}

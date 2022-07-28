@@ -1,0 +1,85 @@
+{% extends 'base.html' %} 
+{% block navbar %} 
+{% with page=4 %} 
+{{block.super }} 
+{% endwith %} 
+{% endblock %} 
+{% block content %}
+<div class="container pt-5">
+  <h3>Danh mục kết quả</h3>
+  <form  class="pt-3">
+    <div class="row">
+      <div class="col-6">
+        <input name="keyword" value="{{filters.keyword}}" class="form-control" placeholder="Nhập mã học sinh/mã kì thi để tìm"/>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-primary">Tìm kiếm</button>
+      </div>
+      <div class="col-2">
+        <a href='{% url "result-create" %}' class="btn btn-primary">Thêm kết quả</a>
+      </div>
+    </div>
+  </form>
+  <table class="table table-bordered">
+    <tr>
+      <th style="width: 5%" class="text-center">STT</th>
+      <th style="width: 30%" class="text-center">Mã Kì Thi</th>
+      <th style="width: 30%" class="text-center">Mã Học Sinh</th>
+      <th style="width: 20%" class="text-center">Điểm</th>
+      <th style="width: 15%" class="text-center">Thao tác</th>
+    </tr>
+    {% for result in results %}
+      <tr>
+        <td class="text-center">{{ forloop.counter0|add:results.start_index}}</td>
+        <td class="text-center">{{ result.exam.code }}</td>
+        <td class="text-center">{{ result.student.code }}</td>
+        <td class="text-center">{{ result.point}}</td>
+
+        <td class="text-center">
+          <a title="Chỉnh sửa" href='{% url "result-update" result.id %}'><i class="fas fa-edit"></i
+          ></a>
+          &nbsp;
+          <a title="Xóa" style="color: red" href="#" onclick="confirmDelete(this)" url='{% url "result-delete" result.id %}'>
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <nav aria-label="...">
+    {% if results.has_other_pages %}
+      <ul class="pagination">
+        {% if results.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ results.previous_page_number }}"> « </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> « </span></li>
+        {% endif %}
+  
+        {% for i in results.paginator.page_range %}
+          {% if results.number == i %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+  
+        {% if results.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ results.next_page_number }}"> » </a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link"> » </span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+    </nav> 
+
+</div>
+<script>
+  function confirmDelete(a) {
+    var url = a.getAttribute("url");
+    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+      location.href = url;
+    }
+  }
+</script>
+{% endblock %}

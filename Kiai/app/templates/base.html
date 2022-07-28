@@ -1,0 +1,76 @@
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="/static/css/bootstrap.css" />
+<link rel="stylesheet" href="/static/css/main.css" />
+<link rel="stylesheet" href="/static/css/bootstrap4-toggle.min.css" />
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/bootstrap4-toggle.min.js"></script>
+<script src="https://kit.fontawesome.com/e2db74ebd5.js" crossorigin="anonymous"></script>
+<title>Manage Student</title>
+{% if user.is_staff%}
+{% block navbar %}
+{% load static %}
+  <div class="bg-primary">
+    <div>
+      <nav class="navbar navbar-expand navbar-dark bg-primary p-0">
+       
+        <ul class="navbar-nav ml-3">
+          <li class="nav-item {% if page == 0 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'student-list' %}">Người dùng</a>
+          </li>
+          <li class="nav-item {% if page == 1 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'subject-list' %}">Môn học</a>
+          </li>
+          <li class="nav-item {% if page == 2 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'class-list' %}">Lớp học</a>
+          </li>
+          <li class="nav-item {% if page == 3 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'exam-list' %}">Kì thi</a>
+          </li>
+          <li class="nav-item {% if page == 4 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'result-list' %}">Kết quả</a>
+          </li>
+          <li class="nav-item {% if page == 5 %} active {% endif %}">
+            <a class="nav-link" href="{% url 'document-list' %}">Đề thi</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto mr-3">
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle p-0" data-toggle="dropdown" href="#">
+              <img class="rounded-circle" style="width: 60px" src="/static/images/user.svg"/>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href=""> Thông tin tài khoản </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/accounts/logout"> Đăng xuất </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+{% endblock %} 
+{%block content %} 
+{% endblock %}
+{% else %}
+  <div class="container mt-5">
+    <h2 class="text">Bạn không có quyền truy nhập trang này.Xin cảm ơn!</h2>
+    <img class="img-footer" src="{% static "images/error.png" %}"/>
+  </div>
+{% endif %}
+<style>
+  .text{
+    text-align:center;
+    border: 3px solid red;
+  }
+  .img-footer {
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
+    margin-top: 200;
+  }
+</style>
