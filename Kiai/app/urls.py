@@ -63,6 +63,7 @@ urlpatterns = [
     path('staff/document-create', views.createDocument, name='document-create'),
     path('staff/upload-file/<int:id>', views.uploadFile, name='upload-file'),
      #=======================File Model=====================
-     path('staff/view-document/<int:id>', views.viewDocument, name='view-document'),
+    path('staff/set-document-status/<pk>', views.set_document_status),
+    path('staff/result-document/<int:id>', views.resultDocument, name='result-document'),    
 ]
     

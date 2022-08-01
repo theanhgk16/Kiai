@@ -97,9 +97,7 @@ class ExamManagementForm(forms.ModelForm):
     class Meta:
         model = ExamManagement
         fields = '__all__'
-        widgets = {
-                'status': forms.Select(attrs={'class': 'form-select'}),
-            }
+        
 class DocumentForm(forms.Form):
     class Meta:
         model = FileModel

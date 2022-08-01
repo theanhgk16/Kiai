@@ -131,19 +131,11 @@ class Enrollment(models.Model):
         max_length=200, verbose_name="Ghi chú ", default='')
 
 class ExamManagement(models.Model):
-    YES = 'Có'
-    NO = 'Không'
-
-    STATUS = [
-        (YES, 'Có'),
-        (NO, 'Không'),
-    ]
     subject = models.ForeignKey(
         Subject, verbose_name="Môn học",  on_delete=models.PROTECT)
     code = models.CharField(max_length=100, verbose_name='Mã đề thi')
     num_question = models.IntegerField(verbose_name='Số lượng câu hỏi')
-    status = models.CharField(max_length=20, choices=STATUS,
-                           blank=True, verbose_name='Trạng thái xuất bản')
+    status =  models.BooleanField(verbose_name='Trạng thái xuất bản')
     
     def __str__(self):
         return self.code
@@ -151,4 +143,4 @@ class ExamManagement(models.Model):
 class FileModel(models.Model):
     document = models.ForeignKey(
         ExamManagement, verbose_name="Upload",  on_delete=models.PROTECT,default='')
-    doc = models.FileField(upload_to='static/', default=None)
+    doc = models.FileField(upload_to='static/file/', default=None)

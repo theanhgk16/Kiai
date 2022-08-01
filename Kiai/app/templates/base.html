@@ -13,6 +13,18 @@
 {% if user.is_staff%}
 {% block navbar %}
 {% load static %}
+<style>
+  .text{
+    text-align:center;
+    border: 3px solid red;
+  }
+  .img-footer {
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
+    margin-top: 200;
+  }
+</style>
   <div class="bg-primary">
     <div>
       <nav class="navbar navbar-expand navbar-dark bg-primary p-0">
@@ -62,15 +74,3 @@
     <img class="img-footer" src="{% static "images/error.png" %}"/>
   </div>
 {% endif %}
-<style>
-  .text{
-    text-align:center;
-    border: 3px solid red;
-  }
-  .img-footer {
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto;
-    margin-top: 200;
-  }
-</style>

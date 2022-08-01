@@ -1,0 +1,47 @@
+Jquery - Selector:
+Tag-name : Biểu diễn một tên thẻ có sẵn trong DOM
++ vd : $('p): Chọn tất cả đoạn văn abrn trong phần tử
+Tag-ID : biểu diễn 1 tên thẻ có sẵn với ID có trong DOM
++ vd: $('#some-id'): Chọn tất cả phần tử có trong thẻ html mà có 1 ID là some-id
+Tag-class: Biểu diễn 1 thẻ có sẵn với lớp đã cho trong DOM
++ vd $('.some-class'): Chọn tất cả phần tử có trong html mà có 1 lớp là some-class
+
+Sử dụng Selector trong Jquery
+- Name : chọn phần tử mà so khớp với phần tử Name đã cho.
+- # ID : chọn một phần tử đơn àm khướp với ID đã cho.
+- Universal : chọn tất cả phần tử có sẵn trong DOM.
+
+Ví dụ về Selector trong Jquery
+-$('*'): chọn tất cả phần tử trong tài liệu.
+-$("p > *) chọn phần tử mà là con của một phần tử đoạn văn.
+-$('#specialID): nhận phần tử id="specialID".
+-$(".specialClass: nhận tất cả phần tử mà có class là specialClass.
+
+Jquery-Thuộc Tính
+- Các phương thức Atribute trong Jquery:
++ attr(properties): Thiết lập một cặp đối tượng key/value như là các thuộc 
+	tính trên tất cả phần tử được so ánh khớp.
++ attr(key, func) : đặt thuộc tính duy nhất thành một giá trị được tính toán, 
+		    trên tất cả các phần tử được so khớp.
+	-- key: tên thuộc tính cần đặt
+	-- func: một hàm trả về giá trị cần đặt. Hàm này sẽ có một đối số là chỉ mục của phần tử hiện tại.
+
+Jquery-Ajax:
+* Loading Simple Data(Tải dữ liệu): Phương thức load() để thao tác
+- Cú pháp : [selector].load(URL, [data], [callback]);
++ URL : URL của tài nguyên phía máy chủ mà yêu cầu được gửi đến.
++ data : tham số tùy chọn đại diện cho một đối tượng có các thuôc tính được tuần tự hóa
+	thành các tham số được mã hóa thích hợp để chuyển tới yêu cầu.
+	Nếu được chỉ định yêu cầu được thực hiện bằn phương thức thức POST, nếu bị bỏ qua, phướng thức gét được thực hiện.
++ callback:hàm được gọi sau khi dữ liệu đã được phản hồi.
+* Getting Json Data (nhận dữ liệu Json): hàm getJson() phân tích cú pháp chuỗi JSON được trả về và làm cho chuỗi kết quả 
+	có sẵn cho hàm gọi lại dưới dạng tham số đầu tiên để thực hiện thêm hành động.
+- Syntax( cú pháp): [selector].getJson( URL, [data], [callback]);
++ URL của tài nguyên phía máy chủ được liên hệ qua phương thức GET.
++ data: Một đối tượng có thuộc tính đóng vai trò là cặp tên / giá trị được sử dụng để tạo chuỗi truy vấn được nối vào URL 
+	hoặc chuỗi truy vấn được mã hóa và định dạng trước.
++ callback: Một hàm được gọi khi yêu cầu hoàn thành. Giá trị dữ liệu thu được từ việc phân tích nội dung phản hồi dưới dạng 
+	   chuỗi JSON được chuyển làm tham số đầu tiên cho lệnh gọi lại này và trạng thái là tham số thứ hai.
+* Truyền dữ liệu tới Server: Thu tập Input từ người sử dụng và truyền vào Input này tới Server để tiến hành xư lý sâu hơn.
+			     jQuery AJAX làm nó dễ dàng để truyền các dữ liệu đã thu tập tới Server bởi sử dụng tham số data
+			      của bất kỳ phương thức Ajax có sẵn nào.

@@ -1,4 +1,5 @@
 import doctest
+from stat import filemode
 from django.contrib.auth import login, authenticate
 from .forms import MyUserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -9,12 +10,11 @@ from .forms import *
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import re
-import random
-import string
-from django.http import JsonResponse
 import json
-from django.contrib import messages
+from django.http import JsonResponse
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 # Create your views here.
 
 
@@ -528,10 +528,12 @@ def searchDocument(keyword, subject_id):
     
 #     return render(request, 'document/list.html', {'documents':  documents, 'filters': filters})
 
+
 @login_required
 def listDocument(request):
     keyword = request.GET.get('keyword', '')
     subject_id = request.GET.get('subject_id', '')
+    document = ExamManagement.objects.all()
     if keyword or subject_id:
         documents = ExamManagement.objects.filter(Q(code__contains=keyword))
         if subject_id:
@@ -540,7 +542,7 @@ def listDocument(request):
     else:
         documents = ExamManagement.objects.all()
     # Show number contacts per page.
-    paginator = Paginator(documents, 3)
+    paginator = Paginator(documents, 5)
     page_number = request.GET.get('page')
     documents = paginator.get_page(page_number)
     try:
@@ -558,13 +560,11 @@ def listDocument(request):
         'subject_id': subject_id,
     }
     #
-    return render(request, 'document/list.html', {'documents': documents, 'subjects': Subject.objects.all(), 'searchdocument': searchdocument, 'filters': filters})
-
+    return render(request, 'document/list.html', {'documents': documents, 'subjects': Subject.objects.all(), 'searchdocument': searchdocument, 'filters': filters })
 
 @login_required
 def createDocument(request):
     form = ExamManagementForm()
-    
     if request.method == 'POST':
         form = ExamManagementForm(request.POST)
         if form.is_valid():
@@ -572,19 +572,53 @@ def createDocument(request):
             return redirect('document-list')
     return render(request, 'document/form.html', {'form': form})
 
+@csrf_exempt
+@require_http_methods(["POST"])
+def set_document_status(request, pk):
+    document = ExamManagement.objects.get(pk=pk)
+    document.status = request.GET.get('status')
+    document.save()
+
+    return HttpResponse(
+        json.dumps({'success': True}), 
+        content_type='application/json'
+    )
+  
+# @login_required
+# def uploadFile(request,id):
+#     document = get_object_or_404(ExamManagement, pk=id)
+#     form = DocumentForm()
+#     if request.method == 'POST':
+#         form = DocumentForm(request.POST,request.FILES)
+#         FileModel.objects.create(
+#             document=get_object_or_404(ExamManagement, pk=id),
+#             doc = request.FILES['doc']
+#         )
+#         document.save()
+#         return redirect('document-list', id)
+#     return render(request, 'document/uploadFile.html', {'form': form, 'document': document})
 
 @login_required
 def uploadFile(request,id):
     document = get_object_or_404(ExamManagement, pk=id)
     form = DocumentForm()
-    if request.method == 'POST':
+    if request.method == 'POST'and 'doc' in request.FILES:
         form = DocumentForm(request.POST,request.FILES)
-        FileModel.objects.create(
-            document=get_object_or_404(ExamManagement, pk=id),
-            doc = request.FILES['doc']
-        )
-        document.save()
-    return render(request, 'document/uploadFile.html', {'form': form, 'document': document})
+        if form.is_valid():
+            FileModel.objects.create(
+                document=document,
+                doc = request.FILES['doc']
+            )
+            document.save()
+        return redirect('result-document', id)
+    return render(request, 'document/uploadFile.html', {'form': form, 'document': document,})  
 
+
+@login_required
+def resultDocument(request, id):
+    document = get_object_or_404(ExamManagement, pk=id)
+    return render(request, 'document/resultDocument.html', {'document': document})
+
+@login_required
 def viewDocument(request):
     return render(request, 'document/viewDocument.html')

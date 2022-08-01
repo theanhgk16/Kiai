@@ -51,7 +51,7 @@
       </tr>
     {% endfor %}
   </table>
- <nav aria-label="...">
+  <nav aria-label="...">
     {% if exams.has_other_pages %}
       <ul class="pagination">
         {% if exams.has_previous %}
@@ -75,14 +75,14 @@
         {% endif %}
       </ul>
     {% endif %}
-    </nav> 
+  </nav> 
 </div>
-<script>
-  function confirmDelete(a) {
-    var url = a.getAttribute("url");
-    if (confirm("Bạn có chắc chắn muốn xóa không?")) {
-      location.href = url;
+  <script>
+    function confirmDelete(a) {
+      var url = a.getAttribute("url");
+      if (confirm("Bạn có chắc chắn muốn xóa không?")) {
+        location.href = url;
+      }
     }
-  }
-</script>
+  </script>
 {% endblock %}

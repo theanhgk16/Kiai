@@ -1,0 +1,5 @@
+* jquery Remove() Method:
+- syntax : $(selector).remove();
+
+* jquery Emty() Method:
+- syntax : $(selector).empty();
