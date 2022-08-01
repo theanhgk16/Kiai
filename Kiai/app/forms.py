@@ -97,12 +97,14 @@ class ExamManagementForm(forms.ModelForm):
     class Meta:
         model = ExamManagement
         fields = '__all__'
-        
-class DocumentForm(forms.Form):
-    class Meta:
-        model = FileModel
-        fields = '__all__'
         widgets = {
                 'doc': forms.FileField(label='Chọn một file'),
             }
+# class DocumentForm(forms.Form):
+#     class Meta:
+#         model = FileModel
+#         fields = '__all__'
+#         widgets = {
+#                 'doc': forms.FileField(label='Chọn một file'),
+#             }
         

@@ -566,7 +566,7 @@ def listDocument(request):
 def createDocument(request):
     form = ExamManagementForm()
     if request.method == 'POST':
-        form = ExamManagementForm(request.POST)
+        form = ExamManagementForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return redirect('document-list')
@@ -601,24 +601,9 @@ def set_document_status(request, pk):
 @login_required
 def uploadFile(request,id):
     document = get_object_or_404(ExamManagement, pk=id)
-    form = DocumentForm()
     if request.method == 'POST'and 'doc' in request.FILES:
-        form = DocumentForm(request.POST,request.FILES)
-        if form.is_valid():
-            FileModel.objects.create(
-                document=document,
-                doc = request.FILES['doc']
-            )
-            document.save()
-        return redirect('result-document', id)
-    return render(request, 'document/uploadFile.html', {'form': form, 'document': document,})  
+        document.doc = request.FILES['doc']
+        document.save()
+        return redirect('document-list')
+    return render(request, 'document/uploadFile.html', {'document': document})
 
-
-@login_required
-def resultDocument(request, id):
-    document = get_object_or_404(ExamManagement, pk=id)
-    return render(request, 'document/resultDocument.html', {'document': document})
-
-@login_required
-def viewDocument(request):
-    return render(request, 'document/viewDocument.html')

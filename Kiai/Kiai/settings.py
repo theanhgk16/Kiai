@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'Kiai.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kiai',
+        'NAME': 'kiai1',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

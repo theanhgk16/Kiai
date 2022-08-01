@@ -136,11 +136,12 @@ class ExamManagement(models.Model):
     code = models.CharField(max_length=100, verbose_name='Mã đề thi')
     num_question = models.IntegerField(verbose_name='Số lượng câu hỏi')
     status =  models.BooleanField(verbose_name='Trạng thái xuất bản')
+    doc = models.FileField(upload_to='static/file/', blank=True)
     
     def __str__(self):
         return self.code
 
-class FileModel(models.Model):
-    document = models.ForeignKey(
-        ExamManagement, verbose_name="Upload",  on_delete=models.PROTECT,default='')
-    doc = models.FileField(upload_to='static/file/', default=None)
+# class FileModel(models.Model):
+#     document = models.ForeignKey(
+#         ExamManagement, verbose_name="Upload",  on_delete=models.PROTECT,default='')
+#     doc = models.FileField(upload_to='static/file/', default=None)
