@@ -12,7 +12,7 @@ class MyUserAdmin(UserAdmin):
     add_form = forms.MyUserCreationForm
     form = forms.MyUserChangeForm
     model = models.User
-    list_display = ['username', 'name', 'phone','address']
+    list_display = ['username', 'name', 'phone', 'address']
 
 
 admin.site.register(models.User, MyUserAdmin)
@@ -22,4 +22,5 @@ admin.site.register(Exam)
 admin.site.register(Result)
 admin.site.register(Enrollment)
 admin.site.register(ExamManagement)
-# admin.site.register(FileModel)
+admin.site.register(Question)
+admin.site.register(Answer)

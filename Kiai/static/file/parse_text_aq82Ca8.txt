@@ -1,0 +1,37 @@
+text = '''
+Câu 1. HTML là viết tắt của?
+A. Hypertext Markup language
+B. Hypnosis Tender Markup language
+
+Câu 2. CSS là viết tắt của?
+A. Cascading Style Sheet
+B. Custom Style Sheet
+'''
+
+def clean_line(line):
+    pos = line.find('. ')
+    if pos >= 0:
+        return line[pos+1:].strip()
+    else:
+        return line.strip()
+
+def parse_text(text):
+    items = []
+    lines =  text.split('\n') + ['']
+    question = ''
+    answers = []
+    for line in lines:
+        line = clean_line(line)
+        if line == '':
+            if question and answers:
+                items.append({'question': question, 'answers': answers})
+            question = ''
+            answers = []
+        else:
+            if question == '':
+                question = line
+            else:
+                answers.append(line)
+    return items
+
+print(parse_text(text))

@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.core.files import File
 # Create your views here.
 
 
@@ -533,7 +534,6 @@ def searchDocument(keyword, subject_id):
 def listDocument(request):
     keyword = request.GET.get('keyword', '')
     subject_id = request.GET.get('subject_id', '')
-    document = ExamManagement.objects.all()
     if keyword or subject_id:
         documents = ExamManagement.objects.filter(Q(code__contains=keyword))
         if subject_id:
@@ -583,27 +583,52 @@ def set_document_status(request, pk):
         json.dumps({'success': True}), 
         content_type='application/json'
     )
-  
+
 # @login_required
 # def uploadFile(request,id):
 #     document = get_object_or_404(ExamManagement, pk=id)
-#     form = DocumentForm()
-#     if request.method == 'POST':
-#         form = DocumentForm(request.POST,request.FILES)
-#         FileModel.objects.create(
-#             document=get_object_or_404(ExamManagement, pk=id),
-#             doc = request.FILES['doc']
-#         )
+#     if request.method == 'POST'and 'doc' in request.FILES:
+#         document.doc = request.FILES['doc']
 #         document.save()
-#         return redirect('document-list', id)
-#     return render(request, 'document/uploadFile.html', {'form': form, 'document': document})
+#         return redirect('document-list')
+#     return render(request, 'document/uploadFile.html', {'document': document})
 
+# def clean_line(line):
+#     pos = line.find('. ')
+#     if pos >= 0:
+#         return line[pos+1:].strip()
+#     else:
+#         return line.strip()
+
+# def parse_text(text):
+#     items = []
+#     lines =  text.split('\n') + ['']
+#     question = ''
+#     answers = []
+#     for line in lines:
+#         line = clean_line(line)
+#         if line == '':
+#             if question and answers:
+#                 items.append({'question': question, 'answers': answers})
+#             question = ''
+#             answers = []
+#         else:
+#             if question == '':
+#                 question = line
+#             else:
+#                 answers.append(line)
+#     return items
+
+# print(parse_text(text))
 @login_required
 def uploadFile(request,id):
     document = get_object_or_404(ExamManagement, pk=id)
     if request.method == 'POST'and 'doc' in request.FILES:
         document.doc = request.FILES['doc']
-        document.save()
+        file = request.FILES.get('doc')
+        if file:
+            text = file.read().decode()  
+
+        # document.save()
         return redirect('document-list')
     return render(request, 'document/uploadFile.html', {'document': document})
-

@@ -1,11 +1,7 @@
-from telnetlib import STATUS
-from tkinter.messagebox import QUESTION, YES
-from xml.dom.minidom import Document
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 from django.db import models
-from grpc import Status
 # Create your models here.
 
 
@@ -74,7 +70,7 @@ class Subject(models.Model):
         max_length=500, verbose_name='Mô tả', blank=True)
     image = models.ImageField(
         verbose_name='Ảnh môn học', upload_to='static/images')
-    
+
     def __str__(self):
         return self.name
 
@@ -130,18 +126,31 @@ class Enrollment(models.Model):
     note = models.CharField(
         max_length=200, verbose_name="Ghi chú ", default='')
 
+
 class ExamManagement(models.Model):
     subject = models.ForeignKey(
         Subject, verbose_name="Môn học",  on_delete=models.PROTECT)
     code = models.CharField(max_length=100, verbose_name='Mã đề thi')
     num_question = models.IntegerField(verbose_name='Số lượng câu hỏi')
-    status =  models.BooleanField(verbose_name='Trạng thái xuất bản')
+    status = models.BooleanField(verbose_name='Trạng thái xuất bản')
     doc = models.FileField(upload_to='static/file/', blank=True)
-    
+
     def __str__(self):
         return self.code
 
-# class FileModel(models.Model):
-#     document = models.ForeignKey(
-#         ExamManagement, verbose_name="Upload",  on_delete=models.PROTECT,default='')
-#     doc = models.FileField(upload_to='static/file/', default=None)
+
+class Question(models.Model):
+    exam_Management = models.ForeignKey(
+        ExamManagement, on_delete=models.PROTECT)
+    body = models. CharField(max_length=300, verbose_name='Nội dung câu hỏi')
+    ordering = models.CharField(
+        max_length=300, verbose_name='Số thứ tự câu hỏi')
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(
+        Question, on_delete=models.PROTECT)
+    body = models.CharField(max_length=300, verbose_name='Câu trả lời')
+    ordering = models.CharField(
+        max_length=300, verbose_name='Số thứ tự câu trả lời')
+    is_corect = models.BooleanField(verbose_name='Đáp án đúng')
