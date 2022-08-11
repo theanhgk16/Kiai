@@ -82,37 +82,36 @@ def result(request, id):
     exams = Exam.objects.filter(subject=subject)
     results = Result.objects.filter(
         student=request.user).all()
-    return render(request, 'user/result.html', {'subject': subject, 'student': student, 'exams': exams, 'data': results})
-
+    return render(request, 'user/result.html', {'subject': subject, 'student': student, 'exams': exams, 'data': results})               
     
-# def exam_document(request):
-    # try:
-    #     question_objs = Question.objects.all()
-    #     data = []
-    #     for question_obj in question_objs:
-    #         data.append({
-    #             "exam_Management" : question_obj.exam_Management,
-    #             "body" : question_obj.body,
-    #             "ordering": question_obj.ordering,
-    #             "answers" : question_obj.get_answers()   
-    #         })
-    #         print(data)
-    # except Exception as e:
-    #     print(e)
-    # return HttpResponse("Lỗi")        
-    
-def exam_document(request):
+def exam_document(request, id):
     queryParams = request.GET
+    exam = Document.objects.get(pk=id)
     
-    questions = Question.objects.all()
-    answers = Answer.objects.all()
+    questions = Question.objects.filter(exam_Management=exam)
+
+    if request.method == 'POST':
+        point = 0
+        for question in questions:
+            correct_answer = Answer.objects.get(question=question,is_correct=True)
+            student_answer = request.POST.get(f"ans_{question.pk}")
+            if student_answer == correct_answer.ordering:
+                point += 1
+
+        Result.objects.create(
+            exam=exam,
+            student=request.user,
+            point=point
+        )
+
+        return redirect('home')
     
-    context = {
-        'queryParams': queryParams,
-        'questions': questions,
-        'answers': answers,
-    }
-    return render(request, 'user/exam_document.html', context)
+    else:
+        context = {
+            'queryParams': queryParams,
+            'questions': questions,
+        }
+        return render(request, 'user/exam_document.html', context)
 
 # =================================== STAFF ==============================
 

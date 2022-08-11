@@ -8,15 +8,15 @@
 <div class="container">
     <h1 class="text-danger mt-3">Bài thi</h1>
     <hr>
-    <div>
+    <form method="POST">
         {% for question in  questions %}
             <table>
                 <tr>
                     <td>{{question.ordering}} - {{question.body}}</td>
                 </tr>   
-                    {% for answer in question.answer_set.all %}
+                    {% for answer in question.answer_set %}
                         <tr>
-                            <td><input type = "radio" class="rb" name =" " id=" " value="">{{answer.body}}</td>
+                            <td><input type = "radio" class="" name="ans_{{question.pk}}" value="{{answer.ordering}}">{{answer.body}}</td>
                         </tr>
                     {% endfor %}
             </table>
@@ -25,8 +25,7 @@
 
         <input type="submit" class="btn btn-success" value="Nộp bài">
         <br>
-        </div>
-    </div>
+    </form>
 </body>
 </html>
 {%endblock%}

@@ -1,0 +1,12 @@
+Câu 1. HTML là viết tắt của?
+A. Hypertext Markup Language
+B. Hypnosis Tender Markup Language
+C. Hyphen Tutorial Markdown Language
+D. Hypnosis Tutorial Markdown Language
+
+Câu 2. CSS là viết tắt của?
+A. Cascadding Style Sheet
+B. Custom Styling Sheet
+C. Cascadding Styling Sheet
+D. Cascadding Super Sheet
+
