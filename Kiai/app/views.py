@@ -1,5 +1,3 @@
-import doctest
-from stat import filemode
 from django.contrib.auth import login, authenticate
 from .forms import MyUserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -15,7 +13,6 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.core.files import File
 # Create your views here.
 
 
@@ -78,20 +75,46 @@ def registerSubject(request, id):
         return JsonResponse({'success': True})
     return render(request, 'user/register.html', {'form': form, 'subject': subject, 'student': student})
 
-
+@login_required
 def result(request, id):
     subject = get_object_or_404(Subject, pk=id)
     student = get_object_or_404(User, pk=request.user.pk)
     exams = Exam.objects.filter(subject=subject)
     results = Result.objects.filter(
-        student=request.user).values_list('exam_id', 'point')
-    data = list()
-    for result in results:
-        data.insert(result[0], result[1])
-    return render(request, 'user/result.html', {'subject': subject, 'student': student, 'exams': exams, 'data': data})
-    # return render(request, 'user/result.html')
-# =================================== STAFF ==============================
+        student=request.user).all()
+    return render(request, 'user/result.html', {'subject': subject, 'student': student, 'exams': exams, 'data': results})
 
+    
+# def exam_document(request):
+    # try:
+    #     question_objs = Question.objects.all()
+    #     data = []
+    #     for question_obj in question_objs:
+    #         data.append({
+    #             "exam_Management" : question_obj.exam_Management,
+    #             "body" : question_obj.body,
+    #             "ordering": question_obj.ordering,
+    #             "answers" : question_obj.get_answers()   
+    #         })
+    #         print(data)
+    # except Exception as e:
+    #     print(e)
+    # return HttpResponse("Lỗi")        
+    
+def exam_document(request):
+    queryParams = request.GET
+    
+    questions = Question.objects.all()
+    answers = Answer.objects.all()
+    
+    context = {
+        'queryParams': queryParams,
+        'questions': questions,
+        'answers': answers,
+    }
+    return render(request, 'user/exam_document.html', context)
+
+# =================================== STAFF ==============================
 
 def createSearchUrl(keyword, from_date):
     from_date = from_date or ''
@@ -535,12 +558,12 @@ def listDocument(request):
     keyword = request.GET.get('keyword', '')
     subject_id = request.GET.get('subject_id', '')
     if keyword or subject_id:
-        documents = ExamManagement.objects.filter(Q(code__contains=keyword))
+        documents = Document.objects.filter(Q(code__contains=keyword))
         if subject_id:
             documents = documents.filter(
                 subject=Subject.objects.get(id=subject_id))
     else:
-        documents = ExamManagement.objects.all()
+        documents = Document.objects.all()
     # Show number contacts per page.
     paginator = Paginator(documents, 5)
     page_number = request.GET.get('page')
@@ -564,9 +587,9 @@ def listDocument(request):
 
 @login_required
 def createDocument(request):
-    form = ExamManagementForm()
+    form = DocumentForm()
     if request.method == 'POST':
-        form = ExamManagementForm(request.POST,request.FILES)
+        form = DocumentForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return redirect('document-list')
@@ -575,7 +598,7 @@ def createDocument(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 def set_document_status(request, pk):
-    document = ExamManagement.objects.get(pk=pk)
+    document = Document.objects.get(pk=pk)
     document.status = request.GET.get('status')
     document.save()
 
@@ -584,51 +607,65 @@ def set_document_status(request, pk):
         content_type='application/json'
     )
 
-# @login_required
 # def uploadFile(request,id):
-#     document = get_object_or_404(ExamManagement, pk=id)
+#     document = get_object_or_404(Document, pk=id)
 #     if request.method == 'POST'and 'doc' in request.FILES:
 #         document.doc = request.FILES['doc']
 #         document.save()
 #         return redirect('document-list')
 #     return render(request, 'document/uploadFile.html', {'document': document})
 
-# def clean_line(line):
-#     pos = line.find('. ')
-#     if pos >= 0:
-#         return line[pos+1:].strip()
-#     else:
-#         return line.strip()
+def clean_line(line):
+    pos = line.find('. ')
+    if pos >= 0:
+        return line[pos+1:].strip()
+    else:
+        return line.strip()
 
-# def parse_text(text):
-#     items = []
-#     lines =  text.split('\n') + ['']
-#     question = ''
-#     answers = []
-#     for line in lines:
-#         line = clean_line(line)
-#         if line == '':
-#             if question and answers:
-#                 items.append({'question': question, 'answers': answers})
-#             question = ''
-#             answers = []
-#         else:
-#             if question == '':
-#                 question = line
-#             else:
-#                 answers.append(line)
-#     return items
+def parse_text(text):
+    items = []
+    lines =  text.split('\n') + ['']
+    question = ''
+    answers = []
+    for line in lines:
+        line = clean_line(line)
+        if line == '':
+            if question and answers:
+                items.append({'question': question, 'answers': answers})
+            question = ''
+            answers = []
+        else:
+            if question == '':
+                question = line
+            else:
+                answers.append(line)
+    return items
 
-# print(parse_text(text))
 @login_required
 def uploadFile(request,id):
-    document = get_object_or_404(ExamManagement, pk=id)
-    if request.method == 'POST'and 'doc' in request.FILES:
+    document = get_object_or_404(Document, pk=id)
+    if request.method == 'POST' and 'doc' in request.FILES:
         document.doc = request.FILES['doc']
         file = request.FILES.get('doc')
         if file:
-            text = file.read().decode()  
-
-        # document.save()
+            text = file.read().decode()
+            questions = parse_text(text)
+            # print(questions)
+            for i,item in enumerate(questions):
+                question = Question.objects.create(
+                exam_Management = document,
+                ordering = i+1,
+                body = item['question']
+            )
+                for j,ans in enumerate(item['answers']):
+                    Answer.objects.create(
+                        question = question,
+                        ordering = j+1,
+                        body = ans,
+                        is_correct = (j==0)
+                    )
+        document.save()
         return redirect('document-list')
     return render(request, 'document/uploadFile.html', {'document': document})
+
+

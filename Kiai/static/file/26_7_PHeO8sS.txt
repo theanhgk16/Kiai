@@ -1,3 +1,0 @@
-5.(done) Bổ sung trạng thái xuất bản ở danh sách là Switchery (dạng on/off), click vào sẽ thay đổi trạng thái xuất bản của Đề thi (AJAX)
-6. Bổ sung nút Xem đề (bên phải nút Tải đề thi), sẽ hiển thị khi giáo viên tải đề thi thành công.
-7. Khi ấn nút Xem đề, hiển thị popup hiển thị ra đường dẫn của file đã tải lên từ nút Tải đề thi

@@ -78,7 +78,7 @@
           <div class="collapse navbar-collapse" id="navbarExample01">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item {% if not page %} active {% endif %}">
-                <a class="nav-link" href="{% url 'home' %}">Trang Chủ</a>
+                <a class="nav-link" href="{% url 'home' %}">Trang chủ</a>
               </li>
               <li class="nav-item {% if page == 1 %} active {% endif %}">
                 <a class="nav-link" href="">Thông tin</a>
@@ -92,7 +92,7 @@
                     <img class="rounded-circle" style="width:40px; height:35px" src="/static/images/user.svg">
                   </a>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="accounts/edit-profile">Thông tin tài khoản</a>
+                    <a class="dropdown-item" href="/accounts/edit-profile">Thông tin tài khoản</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/accounts/logout">Đăng xuất</a>
                   </div>

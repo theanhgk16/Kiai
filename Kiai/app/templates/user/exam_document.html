@@ -1,0 +1,32 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<html>
+<head>
+    <title>Exam</title>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-danger mt-3">Bài thi</h1>
+    <hr>
+    <div>
+        {% for question in  questions %}
+            <table>
+                <tr>
+                    <td>{{question.ordering}} - {{question.body}}</td>
+                </tr>   
+                    {% for answer in question.answer_set.all %}
+                        <tr>
+                            <td><input type = "radio" class="rb" name =" " id=" " value="">{{answer.body}}</td>
+                        </tr>
+                    {% endfor %}
+            </table>
+        <hr>
+        {% endfor %}
+
+        <input type="submit" class="btn btn-success" value="Nộp bài">
+        <br>
+        </div>
+    </div>
+</body>
+</html>
+{%endblock%}

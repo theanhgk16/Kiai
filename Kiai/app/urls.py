@@ -10,6 +10,13 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('register/<int:id>', views.registerSubject, name='register-subject'),
     path('result/<int:id>', views.result, name='result'),
+    path('exam-document', views.exam_document, name='exam-document'),
+    
+    
+    
+    
+    
+    
     # =====================Student=========================
     path('staff', views.listStudent, name='student-list'),
     path('staff/student-create/', views.createStudent, name='student-create'),

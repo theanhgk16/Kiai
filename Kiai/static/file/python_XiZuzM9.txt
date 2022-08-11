@@ -1,0 +1,11 @@
+Câu 1. What keyword do we use to declare a library in python?
+A. import
+B. include
+C. Uses
+D. attach
+Câu 2. In NNLT Python, to enter a real number for the variable n, which of the following statements is correct?
+A. float(input(‘Nhập số thực n:’))
+B. n=int(input(‘Nhập 1 số thực:’))
+C. n=float(input(‘Nhập 1 số thực:’))
+D. n=input(‘Nhập 1 số thực:’)
+

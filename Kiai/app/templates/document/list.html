@@ -17,9 +17,9 @@
           <select name="subject_id" class="form-control">
             <option value="">-----Chọn môn học----</option>
             {% for subject in subjects %}
-            <option value="{{ subject.id }}" {% if filters.subject_id|add:0 == subject.id %} selected {%endif%}>
-              {{subject.name}}
-            </option>
+              <option value="{{ subject.id }}" {% if filters.subject_id|add:0 == subject.id %} selected {%endif%}>
+                {{subject.name}}
+              </option>
             {% endfor %}
           </select>
         </div>

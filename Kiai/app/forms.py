@@ -93,9 +93,9 @@ class EnrollmentForm(forms.ModelForm):
         }
 
 
-class ExamManagementForm(forms.ModelForm):
+class DocumentForm(forms.ModelForm):
     class Meta:
-        model = ExamManagement
+        model = Document
         exclude = ['doc']
         widgets = {
                 'doc': forms.FileField(label='Chọn một file'),

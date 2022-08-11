@@ -1,9 +1,0 @@
-1. Giao dien cho nut So dien thoai
-2. Click vao SDT thi copy sdt do vao clipboard
-3. Cho nut Them hoc sinh xuong duoi
-4. Cho ma HS la readonly va tu tang theo quy luat "HS00x"
-5. Fix bug tim kiem khi chuyen trang
-6. So dien thoai va CMND khi tao va sua hoc sinh: de type='number'
-7. Message validation cho mau do
-8. Cho validation message xuong duoi o input
-9. Bo sung truong gioi tinh

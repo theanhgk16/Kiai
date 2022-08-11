@@ -1,7 +1,0 @@
-User
-tk : user
-mk : anh12345
-
-Admin
-tk : admin
-mk :1

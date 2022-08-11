@@ -53,24 +53,31 @@
                     </tr> 
                     <tr>
                       <th>Kết quả:</th>
-                      <table class="table">
-                        <thead class="thead-light">
-                          <tr>
-                            <th scope="col">Kì Thi</th>
-                            <th scope="col">Ngày</th>
-                            <th scope="col">Điểm</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for exam in exams %}
+                      <td>
+                        <table class="table">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Kì Thi</th>
+                              <th scope="col">Ngày</th>
+                              <th scope="col">Điểm</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for exam in exams %}
                             <tr>
                               <td>{{ exam.code }} - {{ exam.name }}</td>
                               <td>{{ exam.start_date | date }}</td>
-                              <td>{{ forloop.counter0 }}</td>
+                              {% for item in data %}
+                                {% if item.exam_id == exam.id %}
+                                  <td>{{ item.point }}</td>
+                                {% endif %}
+                              {% endfor %}
                             </tr>
                           {% endfor %}
-                        </tbody>
-                      </table>
+
+                          </tbody>
+                        </table>
+                    </td>
                     </tr> 
                   </table>
                 </br>

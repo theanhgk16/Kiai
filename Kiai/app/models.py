@@ -1,3 +1,4 @@
+from venv import create
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
@@ -109,8 +110,6 @@ class Result(models.Model):
         User, verbose_name="Học sinh",  on_delete=models.PROTECT)
     point = models.FloatField(verbose_name='Điểm')
 
-    # def __str__(self):
-    #     return self.exam_id
 
 
 # class Enrollment(models.Model):
@@ -127,7 +126,7 @@ class Enrollment(models.Model):
         max_length=200, verbose_name="Ghi chú ", default='')
 
 
-class ExamManagement(models.Model):
+class Document(models.Model):
     subject = models.ForeignKey(
         Subject, verbose_name="Môn học",  on_delete=models.PROTECT)
     code = models.CharField(max_length=100, verbose_name='Mã đề thi')
@@ -141,11 +140,27 @@ class ExamManagement(models.Model):
 
 class Question(models.Model):
     exam_Management = models.ForeignKey(
-        ExamManagement, on_delete=models.PROTECT)
+        Document, on_delete=models.PROTECT)
     body = models. CharField(max_length=300, verbose_name='Nội dung câu hỏi')
     ordering = models.CharField(
         max_length=300, verbose_name='Số thứ tự câu hỏi')
-
+    # created_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.body
+    
+    def answer_set(self):
+        return Answer.objects.filter(question=self)
+    # def get_answers(self):
+    #     answer_objs = Answer.objects.filter(body = self)
+    #     data = []
+    #     for answer_obj in answer_objs:
+    #         data.append({
+    #             'body' : answer_obj.body,
+    #             'ordering' : answer_obj.ordering,
+    #             'is_corect' : answer_obj.is_corect
+    #         })
+    #     return data
 
 class Answer(models.Model):
     question = models.ForeignKey(
@@ -153,4 +168,7 @@ class Answer(models.Model):
     body = models.CharField(max_length=300, verbose_name='Câu trả lời')
     ordering = models.CharField(
         max_length=300, verbose_name='Số thứ tự câu trả lời')
-    is_corect = models.BooleanField(verbose_name='Đáp án đúng')
+    is_correct = models.BooleanField(default=False, verbose_name='Đáp án đúng')
+    # created_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.body
