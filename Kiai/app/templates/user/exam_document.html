@@ -16,7 +16,7 @@
                 </tr>   
                     {% for answer in question.answer_set %}
                         <tr>
-                            <td><input type = "radio" class="" name="ans_{{question.pk}}" value="{{answer.ordering}}">{{answer.body}}</td>
+                            <td><input type = "radio"  name="ans_{{question.pk}}" value="{{answer.ordering}}">{{answer.body}}</td>
                         </tr>
                     {% endfor %}
             </table>

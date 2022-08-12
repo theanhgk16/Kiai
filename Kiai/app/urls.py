@@ -10,7 +10,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('register/<int:id>', views.registerSubject, name='register-subject'),
     path('result/<int:id>', views.result, name='result'),
-    path('exam-document', views.exam_document, name='exam-document'),
+    path('exam-document/<int:id>', views.exam_document, name='exam-document'),
     
     
     
